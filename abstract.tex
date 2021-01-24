@@ -1,0 +1,28 @@
+%% mon2017dev-abs.tex  Приклад анотації (для mon2017dev.tex)
+
+\begin{abstract}[
+  language=ukrainian,% мова анотації
+  % chapter=Реферат, % заголовок розділу або false, щоб не робити заголовок (типово Анотація/Abstract)
+  % header=false     % автоматична генерація опису дисертації (типово true)
+]
+	
+  \keywords{}
+\end{abstract}
+
+\begin{abstract}[
+  language=english
+]
+  \keywords{}
+\end{abstract}
+
+\begin{bibset}% [a]
+  {Список публікацій здобувача за~темою~дисертації}
+  % {Список публікацій здобувача}
+  \bibliographystyle{gost2008}
+  %
+  % Якщо не треба нумерація з крапкою, можна закоментувати наступні три рядки.
+  \makeatletter
+  \renewcommand\@biblabel[1]{#1.}
+  \makeatother
+%  \bibliography{}
+\end{bibset}

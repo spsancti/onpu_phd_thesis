@@ -1,0 +1,178 @@
+\documentclass[
+type=phd,% тип дисертації
+%%%%%% Ступені згідно з Порядком присудження наукових ступенів (Постанова КМ)
+% c    кандидат <галузь науки> (типово)
+% d    доктор <галузь науки>
+%%%%%% Ступені згідно із Законом України «Про вищу освіту»
+% phd  доктор філософії
+% artd доктор мистецтва
+% scd  доктор наук
+% instnameorder=asc,% порядок розміщення на титульному аркуші
+% назви установи і назви органу, до сфери управління якого належить установа
+% desc низхідний (типово)
+% asc  висхідний
+% ascd висхідний порядок з відмінюванням
+% guide=mon2017dev.naiau,% модуль для підтримки специфічних вимог
+% karazin Харківський національний університет імені В. Н. Каразіна
+%         -- галузь науки для типу дисертації c і d
+%         -- дрібні зміни в оформленні
+% knu     Київський національний університет імені Тараса Шевченка
+%         -- повтор однакових установ двічі
+% naiau   Національна академія внутрішніх справ
+%         -- лапки, тире точно, як у зразку з наказу МОН
+%         -- дрібні зміни в оформленні
+]{mon2017dev}[2021/01/17]
+
+% Налагодження кодування шрифта, кодування вхідного файла
+% та вибір необхідних мов
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[russian,english,ukrainian]{babel}
+
+% Підключення необхідних пакетів. Наприклад,
+% Пакети AMS для підтримки математики, теорем, спеціальних шрифтів
+\usepackage[intlimits]{amsmath}
+\allowdisplaybreaks
+\usepackage{amsthm}
+\usepackage{amssymb}
+% Налагодження нумерованих списків
+\usepackage{enumerate}
+% Гіпертекстові документи
+%\usepackage{hyperref}
+% або лише спеціальне форматування URL
+%\usepackage{url}
+% У списку літератури зворотні вказівки на посилання
+%\usepackage{backref}
+% Сортування посилань
+%\usepackage[noadjust]{cite}
+% Останні два пакети несумісні між собою. Крім того, конфліктують з цим класом!
+% Таблиці зі стовпчиками, що розтягуються
+\usepackage{tabularx}
+% Включення факсимільних підписів і взагалі робота з ілюстраціями, кольором тощо
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% Налагодження параметрів сторінки (зокрема берегів).
+% Наприклад, за допомогою пакета geometry
+\usepackage{geometry}
+\geometry{hmargin={30mm,15mm},lines=29,vcentering}
+
+% Означення теорем (теоремоподібних структур)
+% Класичний варіант: для кожної теореми свій лічильник,
+% тобто теорема 1.1, лема 1.1, теорема 1.2
+\theoremstyle{plain}
+\newtheorem{theorem}{Теорема}[chapter]
+\newtheorem{lemma}{Лема}[chapter]
+\newtheorem{corollary}{Наслідок}[chapter]
+\theoremstyle{definition}
+\newtheorem{definition}{Означення}[chapter]
+\newtheorem{example}{Приклад}[chapter]
+\theoremstyle{remark}
+\newtheorem{remark}{Зауваження}[chapter]
+% Цікавий варіант: всі теореми нумеруються одним лічильником,
+% тобто теорема 1.1, лема 1.2, теорема 1.3
+%\theoremstyle{plain}
+%\newtheorem{theorem}{Теорема}[chapter]
+%\newtheorem{lemma}[theorem]{Лема}
+%\newtheorem{corollary}[theorem]{Наслідок}
+%\theoremstyle{definition}
+%\newtheorem{definition}[theorem]{Означення}
+%\newtheorem{example}[theorem]{Приклад}
+%\theoremstyle{remark}
+%\newtheorem{remark}[theorem]{Зауваження}
+
+% Локальні означення
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\norm}[2][]{\left\lVert#2\right\rVert_{#1}}
+
+% Якщо потрібно працювати лише з деякими розділами
+%\includeonly{}
+
+% Інформація про використані пакети тощо.
+% Може знадобитися для відлагодження класу документа
+%\listfiles
+
+\begin{document}
+	
+	% Назва дисертації
+	\title(uk){Методи та інструментальні засоби обробки планарних зображень на основі штучних нейронних мереж в системах автоматизованого скринінгу}
+	\title(en){Methods and tools for processing planar images based on artificial neural networks in automated screening systems}
+	
+	% Прізвище, ім'я, по батькові здобувача
+	\author(uk){Тимченко Борис Ігорович}
+	\author(en){Tymchenko Borys Igorovych}
+	
+	% Факсимільний підпис автора у файлі sorokina-sig.pdf, .eps, .jpeg тощо
+	% (зсув по x, зсув по y)
+	% [параметри команди \includegraphics]
+	% \facsimilesig{author}(-60,-12)[width=70pt]{sorokina-sig}
+	
+	% Прізвище, ім'я, по батькові наукового керівника/консультанта
+	\supervisor(uk){Антощук Світлана Григорівна}
+	% Науковий ступінь, вчене звання наукового керівника/консультанта
+	{доктор технічних наук, професор}
+	% Установа, де працює науковий керівник/консультант, і посада
+	{Одеський Національний Політехнічний Університет,
+		Диектор інституту комп'ютерних систем}
+	\supervisor(en){Antoshchuk Svitlana Grigorievna}
+	{doctor of technical sciences, professor}
+	{Odessa National Polytechnic University,
+		Director of the Institute of Computer Systems}
+	
+	\speciality(uk){122}  % шифр спеціальності
+	\speciality(en){122}
+	
+	% Індекс за УДК
+	\udc{004.932.72'1}
+	
+	% Установа, де виконана робота, і місто
+	\institution(uk)[
+	altname=ІКС ОНПУ
+	]{Інститут комп'ютерних систем, Одеський Національний Політехнічний Університет}
+	{Одеса}
+	\institution(en)[
+	altname=ICS ONPU
+	]{Institute of computer systems, Odesa National Polytechnic University}
+	{Odesa}
+	
+	% Команду \council переписано в стилі команди \institution:
+	% ключ institution задає «стандартну» назву установи, у спеціалізованій вченій раді якої проводиться захист дисертації
+	% (з вказуванням назви органу, до сфери управління якого належить заклад, установа),
+	% а ключ altname — «альтернативну» (тобто скорочену, для анотації).
+	% Якщо факультативний аргумент відсутній, то клас вважає,
+	% що захист проводиться в тій самій установі, де здійснювалася підготовка здобувача,
+	% а отже, немає потреби писати назву цієї установи двічі на титульному і в анотації.
+	% Але за потреби можна вручну повторити тут назву установи, і буде повтор на титульному і в анотації.
+	\council(uk){K~41.052.08}
+	\council(en){K~41.052.08}
+	
+	% Рік, коли написана дисертація
+	\date{2021}
+	
+	% Тут буде титульний аркуш
+	\maketitle
+	
+	% Анотація
+	\include{abstract}
+	
+	% Зміст
+	\tableofcontents
+	
+	% Розділи дисертації в окремих файлах
+	\include{introduction}     % Вступ
+	\include{chapter1}%        Розділ 1
+	\include{chapter2}%        Розділ 2
+	\include{chapter3}%        Розділ 3
+%	\include{chapter4}%        Розділ 4
+%	\include{conclusions}%      Висновки
+	%\include{mon2017dev-bib}%   Список використаних джерел (який включає список публікацій здобувача)
+	\appendix
+	%\include{mon2017dev-app1}%  Додаток 1 (список публікацій та відомості про апробацію)
+	%\include{xampl-app2}%      Додаток 2 і т. д. ще скільки потрібно додатків
+	
+\end{document}
