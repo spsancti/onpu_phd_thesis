@@ -51,6 +51,8 @@ type=phd,% тип дисертації
 % Включення факсимільних підписів і взагалі робота з ілюстраціями, кольором тощо
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{float}
+
 
 % Налагодження параметрів сторінки (зокрема берегів).
 % Наприклад, за допомогою пакета geometry
@@ -96,6 +98,8 @@ type=phd,% тип дисертації
 % Інформація про використані пакети тощо.
 % Може знадобитися для відлагодження класу документа
 %\listfiles
+
+\graphicspath{{./figures/}}
 
 \begin{document}
 	
@@ -168,8 +172,8 @@ type=phd,% тип дисертації
 	\include{chapter1}%        Розділ 1
 	\include{chapter2}%        Розділ 2
 	\include{chapter3}%        Розділ 3
-%	\include{chapter4}%        Розділ 4
-%	\include{conclusions}%      Висновки
+	\include{chapter4}%        Розділ 4
+	\include{conclusions}%      Висновки
 	%\include{mon2017dev-bib}%   Список використаних джерел (який включає список публікацій здобувача)
 	\appendix
 	%\include{mon2017dev-app1}%  Додаток 1 (список публікацій та відомості про апробацію)
