@@ -27,7 +27,7 @@ type=phd,% тип дисертації
 % та вибір необхідних мов
 \usepackage[T2A]{fontenc}
 \usepackage[cp1251]{inputenc}
-\usepackage[russian,english,ukrainian]{babel}
+\usepackage[russian,english,main=ukrainian]{babel}
 
 % Підключення необхідних пакетів. Наприклад,
 % Пакети AMS для підтримки математики, теорем, спеціальних шрифтів
@@ -52,6 +52,8 @@ type=phd,% тип дисертації
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{float}
+\usepackage[ruled,vlined]{algorithm2e}
+
 
 
 % Налагодження параметрів сторінки (зокрема берегів).
@@ -104,7 +106,7 @@ type=phd,% тип дисертації
 \begin{document}
 	
 	% Назва дисертації
-	\title(uk){Методи та інструментальні засоби обробки планарних зображень на основі штучних нейронних мереж в системах автоматизованого скринінгу}
+	\title(uk){Нейромережеві методи аналізу планарних зображень в системах автоматизованого скринінгу}
 	\title(en){Methods and tools for processing planar images based on artificial neural networks in automated screening systems}
 	
 	% Прізвище, ім'я, по батькові здобувача
@@ -159,22 +161,28 @@ type=phd,% тип дисертації
 	\date{2021}
 	
 	% Тут буде титульний аркуш
-	\maketitle
+%	\maketitle
 	
 	% Анотація
 	\include{abstract}
 	
 	% Зміст
-	\tableofcontents
+%	\tableofcontents
 	
 	% Розділи дисертації в окремих файлах
-	\include{introduction}     % Вступ
-	\include{chapter1}%        Розділ 1
-	\include{chapter2}%        Розділ 2
-	\include{chapter3}%        Розділ 3
-	\include{chapter4}%        Розділ 4
-	\include{conclusions}%      Висновки
-	%\include{mon2017dev-bib}%   Список використаних джерел (який включає список публікацій здобувача)
+%	\include{introduction}     % Вступ
+%	\include{chapter1}%        Розділ 1
+%	\include{chapter2}%        Розділ 2
+%	\include{chapter3}%        Розділ 3
+%	\include{chapter4}%        Розділ 4
+%	\include{conclusions}%      Висновки
+%	\include{mon2017dev-bib}%   Список використаних джерел (який включає список публікацій здобувача)
+
+%	\nocite{*}
+%	\bibstyle{gost2008s}
+%	\renewcommand\bibname{Список публікацій здобувача}
+%	\bibliography{mybib}
+
 	\appendix
 	%\include{mon2017dev-app1}%  Додаток 1 (список публікацій та відомості про апробацію)
 	%\include{xampl-app2}%      Додаток 2 і т. д. ще скільки потрібно додатків
