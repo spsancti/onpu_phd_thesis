@@ -95,6 +95,7 @@ type=phd,% тип дисертації
 \newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
 \newcommand{\norm}[2][]{\left\lVert#2\right\rVert_{#1}}
+\renewcommand{\comment}[1]{}
 
 % Якщо потрібно працювати лише з деякими розділами
 %\includeonly{}
@@ -164,22 +165,22 @@ type=phd,% тип дисертації
 	\date{2021}
 	
 	% Тут буде титульний аркуш
-%	\maketitle
+	\maketitle
 	
 	% Анотація
 	
-%	\include{abstract}
+	\include{abstract}
 	
 %	\include{abstract_detailed}
-%	\include{content_detailed}
+	\include{content_detailed}
 %	\include{summary_paper}
 	% Зміст
-%	\tableofcontents
+	\tableofcontents
 	
 	% Розділи дисертації в окремих файлах
 %	\include{introduction}     % Вступ
 	\include{chapter1}%        Розділ 1
-%	\include{chapter2}%        Розділ 2
+	\include{chapter2}%        Розділ 2
 %	\include{chapter3}%        Розділ 3
 %	\include{chapter4}%        Розділ 4
 %	\include{chapter5}%        Розділ 5
