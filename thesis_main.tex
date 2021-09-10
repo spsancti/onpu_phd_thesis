@@ -97,6 +97,7 @@ type=phd,% тип дисертації
 \newcommand{\norm}[2][]{\left\lVert#2\right\rVert_{#1}}
 \renewcommand{\comment}[1]{}
 
+
 % Якщо потрібно працювати лише з деякими розділами
 %\includeonly{}
 
@@ -163,13 +164,14 @@ type=phd,% тип дисертації
 	
 	% Рік, коли написана дисертація
 	\date{2021}
+	% LC_CTYPE=cp1251 luit grep -ro -P cite\{.*?\}
 	
 	% Тут буде титульний аркуш
 	\maketitle
 	
 	% Анотація
 	
-	\include{abstract}
+%	\include{abstract}
 	
 %	\include{abstract_detailed}
 	\include{content_detailed}
@@ -179,9 +181,9 @@ type=phd,% тип дисертації
 	
 	% Розділи дисертації в окремих файлах
 %	\include{introduction}     % Вступ
-	\include{chapter1}%        Розділ 1
-	\include{chapter2}%        Розділ 2
-%	\include{chapter3}%        Розділ 3
+%	\include{chapter1}%        Розділ 1
+%	\include{chapter2}%        Розділ 2
+	\include{chapter3}%        Розділ 3
 %	\include{chapter4}%        Розділ 4
 %	\include{chapter5}%        Розділ 5
 %	\include{conclusions}%      Висновки
