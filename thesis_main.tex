@@ -128,11 +128,11 @@ type=phd,% тип дисертації
 	% Науковий ступінь, вчене звання наукового керівника/консультанта
 	{доктор технічних наук, професор}
 	% Установа, де працює науковий керівник/консультант, і посада
-	{Одеський Національний Політехнічний Університет,
-		Диектор інституту комп'ютерних систем}
+	{Державний Університет <<Одеська політехніка>>,
+		Директор інституту комп'ютерних систем}
 	\supervisor(en){Antoshchuk Svitlana Grigorievna}
 	{doctor of technical sciences, professor}
-	{Odessa National Polytechnic University,
+	{Odessa Polytechnic State University,
 		Director of the Institute of Computer Systems}
 	
 	\speciality(uk){122}  % шифр спеціальності
@@ -143,12 +143,12 @@ type=phd,% тип дисертації
 	
 	% Установа, де виконана робота, і місто
 	\institution(uk)[
-	altname=ІКС ОНПУ
-	]{Інститут комп'ютерних систем, Одеський Національний Політехнічний Університет}
+	altname=ІКС ДУОП
+	]{Інститут комп'ютерних систем, Державний Університет <<Одеська політехніка>>}
 	{Одеса}
 	\institution(en)[
 	altname=ICS ONPU
-	]{Institute of computer systems, Odesa National Polytechnic University}
+	]{Institute of computer systems, Odesa Polytechnic State University}
 	{Odesa}
 	
 	% Команду \council переписано в стилі команди \institution:
@@ -164,7 +164,8 @@ type=phd,% тип дисертації
 	
 	% Рік, коли написана дисертація
 	\date{2021}
-	% LC_CTYPE=cp1251 luit grep -ro -P cite\{.*?\}
+	% LC_CTYPE=cp1251 luit grep -ro -P cite\{.*?\}
+
 	
 	% Тут буде титульний аркуш
 	\maketitle
@@ -181,13 +182,12 @@ type=phd,% тип дисертації
 	\tableofcontents
 	
 	% Розділи дисертації в окремих файлах
-%	\include{introduction}     % Вступ
-%	\include{chapter1}%        Розділ 1
-%	\include{chapter2}%        Розділ 2
-%	\include{chapter3}%        Розділ 3
-%	\include{chapter4}%        Розділ 4
-	\include{chapter5}%        Розділ 5
-%	\include{conclusions}%      Висновки
+	\include{introduction}     % Вступ
+	\include{chapter1}%        Розділ 1
+	\include{chapter2}%        Розділ 2
+	\include{chapter3}%        Розділ 3
+	\include{chapter5}%        Розділ 4
+	\include{conclusions}%      Висновки
 %	\include{mon2017dev-bib}%   Список використаних джерел (який включає список публікацій здобувача)
 
 %	\nocite{*}
