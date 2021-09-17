@@ -129,11 +129,11 @@ type=phd,% тип дисертації
 	% Науковий ступінь, вчене звання наукового керівника/консультанта
 	{доктор технічних наук, професор}
 	% Установа, де працює науковий керівник/консультант, і посада
-	{Державний Університет <<Одеська політехніка>>,
+	{Одеський Національний Політехнічний Університет,
 		Директор інституту комп'ютерних систем}
 	\supervisor(en){Antoshchuk Svitlana Grigorievna}
 	{doctor of technical sciences, professor}
-	{Odessa Polytechnic State University,
+	{Odessa National Polytechnic University,
 		Director of the Institute of Computer Systems}
 	
 	\speciality(uk){122}  % шифр спеціальності
@@ -144,12 +144,12 @@ type=phd,% тип дисертації
 	
 	% Установа, де виконана робота, і місто
 	\institution(uk)[
-	altname=ІКС ДУОП
-	]{Інститут комп'ютерних систем, Державний Університет <<Одеська політехніка>>}
+	altname=ІКС ОНПУ
+	]{Інститут комп'ютерних систем, Одеський Національний Політехнічний Університет}
 	{Одеса}
 	\institution(en)[
 	altname=ICS ONPU
-	]{Institute of computer systems, Odesa Polytechnic State University}
+	]{Institute of computer systems, Odesa National Polytechnic University}
 	{Odesa}
 	
 	% Команду \council переписано в стилі команди \institution:
@@ -190,55 +190,20 @@ type=phd,% тип дисертації
 	\include{chapter5}%        Розділ 4
 	\include{conclusions}%      Висновки
 
-	\bibliographystyle{gost2008s}
-	\bibstyle{gost2008s}
+	\bibliographystyle{gost2008}
+	\bibstyle{gost2008}
 	\bibliography{dys_paper}
 	
-	\comment{@misc{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4950770/}
-		@misc{https://github.com/RoshanRane/segmentation-moving-MNIST}
-		@misc{https://github.com/williford/seg-mnist-dataset}
-		@misc{google\_em}
-		@misc{se\_cnn}
-		@misc{morph\_opening}
-		@misc{aptos2019}
-		
-		@misc{kaggle-melanoma-data}
-		@misc{melanoma-forum}
-		@misc{ec2,
-			title = {Amazon {EC2}},
-			url = {https://aws.amazon.com/ru/ec2/},
-			abstract = {Вычислительное облако Amazon Elastic Compute Cloud (Amazon EC2) – это веб?сервис, предоставляющий безопасные масштабируемые вычислительные ресурсы в облаке. Запустить инстанс EC2 прямо сегодня.},
-			language = {ru-RU},
-			urldate = {2021-09-17},
-			journal = {Amazon Web Services, Inc.},
-		}
-		@misc{sagemaker,
-			title = {Amazon {SageMaker} – {Machine} {Learning} – {Amazon} {Web} {Services}},
-			url = {https://aws.amazon.com/ru/sagemaker/},
-			abstract = {Amazon SageMaker – это полностью управляемый сервис, который предоставляет каждому разработчику и специалисту по работе с данными возможность быстро создавать, обучать и развертывать модели машинного обучения (ML). SageMaker берет на себя большую часть работы на каждом этапе машинного обучения, чтобы упростить разработку высококачественных моделей.},
-			language = {ru-RU},
-			urldate = {2021-09-17},
-			journal = {Amazon Web Services, Inc.},
-		}
-		@misc{s3,
-			title = {Облачное объектное хранилище {\textbar} Сохранение и извлечение данных из любого места {\textbar} {Amazon} {Simple} {Storage} {Service} ({S3})},
-			url = {https://aws.amazon.com/ru/s3/},
-			language = {ru-RU},
-			urldate = {2021-09-17},
-			journal = {Amazon Web Services, Inc.},
-		}
-		@misc{AWS,
-			title = {Облачные сервисы – {Amazon} {Web} {Services} ({AWS})},
-			url = {https://aws.amazon.com/ru/},
-			abstract = {Платформа Amazon Web Services предлагает надежные, масштабируемые и недорогие сервисы облачных вычислений. Бесплатная регистрация, оплата только по факту использования.},
-			language = {ru-RU},
-			urldate = {2021-09-17},
-			journal = {Amazon Web Services, Inc.},
-		}
+	\comment{
 		
 	}
 
 	\appendix
+	
+	\include{appendix_a}
+	\include{appendix_b}
+	\include{appendix_c}
+	
 	%\include{mon2017dev-app1}%  Додаток 1 (список публікацій та відомості про апробацію)
 	%\include{xampl-app2}%      Додаток 2 і т. д. ще скільки потрібно додатків
 	
