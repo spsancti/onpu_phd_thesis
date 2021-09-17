@@ -55,6 +55,7 @@ type=phd,% тип дисертації
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage[ruled,vlined]{algorithm2e}
+\usepackage[final]{pdfpages}
 
 
 
@@ -188,14 +189,56 @@ type=phd,% тип дисертації
 	\include{chapter3}%        Розділ 3
 	\include{chapter5}%        Розділ 4
 	\include{conclusions}%      Висновки
-%	\include{mon2017dev-bib}%   Список використаних джерел (який включає список публікацій здобувача)
 
-%	\nocite{*}
-%	\bibliographystyle{gost2008s}
-%	\bibstyle{gost2008s}
-%	\bibliography{dys_paper}
+	\bibliographystyle{gost2008s}
+	\bibstyle{gost2008s}
+	\bibliography{dys_paper}
+	
+	\comment{@misc{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4950770/}
+		@misc{https://github.com/RoshanRane/segmentation-moving-MNIST}
+		@misc{https://github.com/williford/seg-mnist-dataset}
+		@misc{google\_em}
+		@misc{se\_cnn}
+		@misc{morph\_opening}
+		@misc{aptos2019}
+		
+		@misc{kaggle-melanoma-data}
+		@misc{melanoma-forum}
+		@misc{ec2,
+			title = {Amazon {EC2}},
+			url = {https://aws.amazon.com/ru/ec2/},
+			abstract = {Вычислительное облако Amazon Elastic Compute Cloud (Amazon EC2) – это веб?сервис, предоставляющий безопасные масштабируемые вычислительные ресурсы в облаке. Запустить инстанс EC2 прямо сегодня.},
+			language = {ru-RU},
+			urldate = {2021-09-17},
+			journal = {Amazon Web Services, Inc.},
+		}
+		@misc{sagemaker,
+			title = {Amazon {SageMaker} – {Machine} {Learning} – {Amazon} {Web} {Services}},
+			url = {https://aws.amazon.com/ru/sagemaker/},
+			abstract = {Amazon SageMaker – это полностью управляемый сервис, который предоставляет каждому разработчику и специалисту по работе с данными возможность быстро создавать, обучать и развертывать модели машинного обучения (ML). SageMaker берет на себя большую часть работы на каждом этапе машинного обучения, чтобы упростить разработку высококачественных моделей.},
+			language = {ru-RU},
+			urldate = {2021-09-17},
+			journal = {Amazon Web Services, Inc.},
+		}
+		@misc{s3,
+			title = {Облачное объектное хранилище {\textbar} Сохранение и извлечение данных из любого места {\textbar} {Amazon} {Simple} {Storage} {Service} ({S3})},
+			url = {https://aws.amazon.com/ru/s3/},
+			language = {ru-RU},
+			urldate = {2021-09-17},
+			journal = {Amazon Web Services, Inc.},
+		}
+		@misc{AWS,
+			title = {Облачные сервисы – {Amazon} {Web} {Services} ({AWS})},
+			url = {https://aws.amazon.com/ru/},
+			abstract = {Платформа Amazon Web Services предлагает надежные, масштабируемые и недорогие сервисы облачных вычислений. Бесплатная регистрация, оплата только по факту использования.},
+			language = {ru-RU},
+			urldate = {2021-09-17},
+			journal = {Amazon Web Services, Inc.},
+		}
+		
+	}
 
-%	\appendix
+	\appendix
 	%\include{mon2017dev-app1}%  Додаток 1 (список публікацій та відомості про апробацію)
 	%\include{xampl-app2}%      Додаток 2 і т. д. ще скільки потрібно додатків
 	
