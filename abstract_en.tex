@@ -1,362 +1,231 @@
 \begin{abstract}[
-language=ukrainian,% мова анотації
+language=english,% мова анотації
 % chapter=Реферат, % заголовок розділу або false, щоб не робити заголовок (типово Анотація/Abstract)
 % header=false     % автоматична генерація опису дисертації (типово true)
 ]
 
-
-In \textbf{introduction} the relevance of developing models of neural networks and methods of their training in automated screening tasks, as well as models of data sets and methods of their generation are substantiated; defined purpose, object, subject, research tasks and research methods; the connection with scientific programs and plans is shown; the scientific novelty and practical significance of the obtained results are given; the personal contribution of the applicant is covered.  
-
+In \textbf{introduction}, the relevance of improving automated screening systems (screening is defined as detection and classification of atypical objects or processes) by creating models of datasets and methods for their generation, as well as models of neural networks and multi-tasking learning methods to increase the accuracy of classification and segmentation of planar images without increasing time. The object, subject, tasks and methods of research are defined; the connection with research works is shown; the scientific novelty and practical significance of the obtained results are given; the personal contribution of the applicant is covered.
 
 
+In the \textbf{first section} of the dissertation the analysis of problems of analysis of planar images (which do not have depth measurement, and in which it is possible to discard scale of objects) in automated screening systems on the basis of neural network technologies is carried out.
+
+The existing systems of automated screening in the subject areas of medicine, meteorology and remote sensing and features of their functioning by analyzing planar images are analyzed. It is shown that the effectiveness of such systems directly depends on the accuracy of image classification and segmentation, as false-positive results can lead to premature response, and false-negative to the omission of existing problems and late response. In addition, no less important factor influencing the effectiveness of screening systems is the time spent on the implementation of the educational process, which, in turn, is associated with the quality of pre-created samples of training data. However, in the tasks of verifying the receipt of sufficient data and conducting high-quality annotations by professionals is usually expensive, and sometimes impossible due to the small number and variety of training examples, subjectivity in the formation of annotations in data sets.
+These factors negatively affect the accuracy of classification and segmentation in the training of deep neural networks by standard methods. To eliminate such influence, it is proposed to solve the problem taking into account partially erroneous annotations when constructing models of classification and segmentation.
+
+It is shown that in such conditions it is expedient to use deep neural networks, due to the possibility of automating the learning process and the use of multi-tasking learning that increase the accuracy of classification and segmentation.
+
+The analysis of the existing models of datasets and methods of their generation showed the limitations of these models, which would allow to form partially erroneous annotations, which have characteristic of real automated screening tasks.
+
+Thus, solving an important scientific and practical problem of increasing the accuracy of classification and segmentation in the analysis of planar images for automated screening systems by improving models of neural networks and methods of their multitasking, especially in terms of partially erroneously annotated data samples.
+
+In the \textbf{second section} method for generating datasets to enable testing of neural networks in learning using partially erroneous annotations and proposed a parametric formalization of the data set model with partially erroneous annotations, which are characteristic of real automated screening tasks were developed.
+
+Because obtaining reliable classification and segmentation annotations for test samples is often impossible or very costly, it is proposed to use model datasets to assess the reliability of models and methods of learning deep neural networks. Such datasets make it possible to conduct training and testing in controlled conditions by artificially adding errors to the annotations of the training data sample (test samples remains with precise annotations).
 
 
+Proposed model of datasets $\mathcal{M}$ has the following definition: 
+\begin{equation}
+	\label{eqn:abstract_model_Def}
+	\mathcal{M} \in \{ \mathcal{X}_{b}, \mathcal{X}_{tex}, N, S_{img}, S_{obj}, \Delta_{max}, N_{obj}, P_e, P_d, S_e, S_d \}
+\end{equation}
+
+where $\mathcal{X}_{b}$ - bacground images set, 
+$\mathcal{X}_{f}$ - objects set,  
+$\mathcal{X}_{tex}$ - object texturing set, 
+$N$ - number of images in the generated dataset, 
+$S_{img}$ - pixel size of generated images,
+$S_{obj}$ - average size of the objects (pixels),
+$\Delta_{max}$ - maximum deviation of objects size,
+$N_{obj}$ - maximum number of objects in the image,
+$P_e$ and $P_d$ - probabilities of mask erosion and dilation for every object,
+$S_e$ and $S_d$ - kernel sizesfor erosion and dilation. 
+	
+The last four parameters are introduced for controlled annotation errors.
+
+Formulated \textbf{first point of scientific novelty}: for the first time a parametric formalization of the dataset model with partially erroneous annotations, which are characteristic of real problems of automated screening, was proposed, which allowed the development of a method of generating training, test and validation data sets.
+
+Based on the proposed parametric model (\ref{eqn: abstract_model_Def}), a method for generating data sets with partly-erroneous annotations has been developed, which contains the following steps:
+
+1. Choose random background: $x_{bg} \sim \mathcal{X}_b$
+
+2. Choose number of objects in the image: $N_{obj} \sim \mathcal{U}(1, N_{obj})$
+
+3. Initialize the segmentation mask: $M = 0 \; \text{sos} \; M \in \mathcal{R}^{C \times S_{img} \times S_{img}}$
+
+4. For $n_{obj}$ times:
+
+\qquad 4.1 Sample object size: $s \sim \mathcal{U}(S_{obj} - \Delta_{max}, S_{obj} + \Delta_{max})$
+
+\qquad 4.2 Sample object coordinates: 
+\begin{align*}
+	i_f &\sim \mathcal{U}(0, S_{img} - s)\\
+	j_f &\sim \mathcal{U}(0, S_{img} - s)
+\end{align*}
+
+\qquad 4.3 Sample object image $x_{fg} \sim \mathcal{X}_f$ and the corresponding object class $c_{fg} \sim \mathcal{Y}_f$
+
+\qquad 4.4 Resample the image with bilinear interpolation: 
+\begin{align*}
+	\hat{x}_{fg} = R_{bilinear}(x_{fg})
+\end{align*}
+
+\qquad 4.5 Sample the texture image $x_{tex} \sim \mathcal{X}_{tex}$
+
+\qquad 4.6 Modify object image with the object texture:
+\begin{equation*}
+	\hat{x}_{fg} = x_{fg} \circ x_{tex}[i_f:i_f+s, j_f:j_f+s]
+\end{equation*}
+
+\qquad 4.7 Place object image into the background image:
+\begin{equation*}
+	x_{bg}[i_f:i_f+s, j_f:j_f+s] = (1 - x_{fg}) \circ x_{bg} + \hat{x}_{fg}
+\end{equation*}
+
+\qquad 4.8 Form the segmentation mask: 
+\begin{equation*}
+	M_{seg} = x_{fg} > \theta_{seg}
+\end{equation*}
+where $\theta_{seg}$ - is the source object binarization threshold. For the MNIST dataset $\theta_{seg} = 0.2$, and for FashionMNIST $\theta_{seg} = 0.1$.
+
+\qquad 4.9 Modify the segmentation mask according to the desired error level:
+\begin{equation*}
+	M_{seg} = 
+	\begin{cases}
+		M_{seg} \oplus K^{S_d \times S_d} &\text{ iff } p_d \sim \mathcal{U}(0, 1) < P_d\\
+		M_{seg} \ominus K^{S_e \times S_e} &\text{ iff } p_e \sim \mathcal{U}(0, 1) < P_e
+	\end{cases}
+\end{equation*}
+where $K^{S_d \times S_d}$ - dilation kernel matrix and $K^{S_e \times S_e}$ - erosion kernel matrix.
+
+\qquad 4.10 Place modified object mask into the common mask:
+\begin{equation*}
+	M[c_{fg}, i_f:i_f+s, j_f:j_f+s] = max \; \{ M[c_{fg}, i_f:i_f+s, j_f:j_f+s], M_{seg} \}
+\end{equation*}
+\qquad 4.11 Save image $x_{bg}$ and mask $M$
+
+5. Finish generation
+
+Thus, the method of generating datasets with partially erroneous annotations based on the parametric model was improved, which due to the generation of annotations: partially erroneous for the training sample and accurate - for the test, made it possible to test the impact of annotation errors on neural networks.
+
+The method allows to obtain many data sets with similar characteristics and to use non-parametric statistical methods (such as bootstrapping) to evaluate models in the absence of real training data. The method is \textbf{the second point of scientific novelty}.
+
+In the \textbf{third section} of the dissertation neural network models and methods of multi-tasking learning were developed to simultaneous increase in accuracy of classification and segmentation without decrease in efficiency.
+
+To implement multi-task learning methods, it is proposed to improve the models of deep neural networks using the encoder-decoder architectures (UNet, LinkNet) by introducing an additional decoder with the normalization layer. Thus, the advanced model consists of an encoder and two decoders (for segmentation and classification tasks, respectively).
+
+The model of the deep neural network is represented by the following expression:
+\begin{align}
+	\label{eqn:enc_features_abs}
+	v_1, v_2 ... v_n &= F_{encoder}(x, \theta_{enc}) \\
+	M_{seg} &= F_{seg}((v_1, v_2 ... v_n), \theta_{seg}) \\
+	C_{cls} &= F_{cls}((v_n), \theta_{cls})
+\end{align}
+
+where $\theta_{enc}$ - are encoder parameters, $\theta_{seg}$ and $\theta_{cls}$ - parameters of encoder and decoder, respectively, $F_{seg}$ and $F_{cls}$ - decoder neural networks.
+
+The proposed model is \textbf{the third point of scientific} novelty.
+
+With the introduction of an additional classification decoder with a normalization layer, it is possible to implement methods of multi-tasking learning and inference for deep neural networks.
+
+During the practical use of neural network methods in screening tasks, it is established that partially erroneous annotations of training data prevent obtaining high accuracy of classification and segmentation. 
+
+The method of multi-task learning in the conditions of partially-erroneous annotations of training data, which is based on use of tasks that are connected with original task is offered. It is shown that for the segmentation problem there is a similar classification problem, for which the annotations of training data are of better quality than for the original segmentation problem.
+
+The proposed method of multi-task learning consists of two stages.
+
+\paragraph{Stage 1. Generating the derivative task}
+
+In the context of multi-task learning, the task of classification is is defined as a multiple instance learning task, instead of marking each of the objects for all classes. In this case, the annotation of the original planar image is a set with one or more objects.
+
+The loss function is calculated separately for each of the tasks (classification and segmentation). The top-limited loss function $ L_{seg} \rceil$ is used to train the segmentation decoder, while the classification decoder uses the normal $ L_{cls} $ loss function, and the total value of the loss function is defined as the arithmetic mean between the individual values:
+
+\begin{equation}
+	L_{total} = \frac{L_{seg} \rceil + L_{cls}}{2}
+\end{equation}
+
+Accordingly, the total gradient of the loss function will also be the arithmetic mean of the gradients of the components $ \nabla L_{seg} \rceil $ and $ \nabla L_{cls} $:
+
+\begin{equation}
+	\nabla L_{total} = \frac{\nabla L_{seg} \rceil + \nabla  L_{cls}}{2}
+\end{equation}
+
+Thus, the presence of non-zero gradients is provided to update the parameters from at least one loss function for each input example.
+
+\paragraph{Stage 2. Loss function bounding}
+
+To reduce the impact of the erroneous part of the annotations, it is proposed to introduce a constraint to the loss function for the segmentation problem with lower quality data annotations. That allowed to reduce the influence of gradients of the loss function on examples with erroneous annotations when learning on several tasks:
+\begin{equation*}
+	\mathcal{L} \rceil = min(L, \theta)
+\end{equation*}
+where $\theta$ - loss function threshold.
+
+Thus, the introduced boundaries are represented by the following expression:
+
+\begin{equation*}
+	\mathcal{\nabla} min(L, \theta) = 
+	\begin{cases}
+		1, & \text{iff } \text{$L \in (-\infty, \theta]$}\\
+		0, & \text{iff } \text{$L \in (\theta, \infty)$}
+	\end{cases}
+\end{equation*}
+
+In the absence of markup for examples in segmentation problems, iterative refinement of this markup is possible. To do this, a refined map of classification features is calculated by the Hadamard product between the output of the segmentation decoder normalized by the sigmoid function and the classification logs:
+\begin{equation}
+	M_{unsup} = \hat{M}_{seg} \circ C_{cls}
+\end{equation}
+
+Next, to obtain the classification result, the summation of the elements $ M_ {unsup} $ is performed with normalization by the sum of the elements of the original non-normalized localization map:
+\begin{equation}
+	C_{unsup} = \frac{\sum_{h=0}^H \sum_{w=0}^{W} M_{unsup(h,w)}}{\sum_{h=0}^H \sum_{w=0}^{W} M_{seg(h,w)} + c}
+\end{equation}
+
+Based on the proposed model of the neural network and the method of its training, a method of multi-taski prediction has been developed. This allowed to increase the accuracy of classification and segmentation of planar images without increasing time needed.
+
+Method consistas of the following stages:
+
+\paragraph{Stage 1. Normalization}
+
+Let $C_{cls} \in \mathcal{R}^{C}$ and $M_{seg} \in \mathcal{R}^{C \times H \times W}$- logits of calssification and segmentation decoders, respectively and lie in the interval $(- \infty, + \infty)$.
+
+To obtain normalized to the interval $[0, 1]$, sigmoid activation function is used:
+\begin{equation*}
+	\sigma(x) = \frac{1}{1 + e^{-x}}
+\end{equation*}
+
+\paragraph{Stage 2. Renormalization}
+
+Renormalization is the weighing of a segmentation map using normalized classifier logits. The first step is the transformation of segmentation and classification logs into uncalibrated estimates between $[0, 1]$:
+
+\begin{align*}
+	\hat{M}_{seg} &= \sigma(M_{seg}) \\
+	\hat{C}_{cls} &= \sigma(C_{cls})	
+\end{align*}
 
 
+These estimates have the same dimensions as original segmentation mask and classification vector, additional dimensions are added for simplicity: $\hat{M}_{seg} \in \mathcal{R}^{C \times H \times W}$ and $\hat{C}_{cls} \in \mathcal{R}^{C \times 1 \times 1}$ 	
 
+Segmentation map is weighted using the Hadamard product: $\hat{M}_{seg}$ and $\hat{C}_{cls}$
+\begin{equation*}
+	M_{refined} = \hat{M}_{seg} \circ \hat{C}_{cls}
+\end{equation*}
 
+Using the model, the proposed methods were tested in different conditions, ablation studies were was performed and the analysis of the resistance of the proposed method to different levels of errors in the annotations was performed. On average, the increase in the Dice coefficient relative to the base method was 13 \%.
 
+Thus, \textbf{fourth point of scientific novelty} is formulated, namely, improved methods of multi-task learning and inference based on an improved model of convolutional neural networks by combining classification and segmentation and introducing a constraint when calculating the segmentation loss function, which allowed to increase the accuracy of segmentation and classification in automated screening tasks.
 
+In \textbf{fourth section} developed tools that implement the proposed solutions. The developed method was tested as part of experiments on synthetic data generated using the proposed model, as well as in experiments in real problems: screening of diabetic retinopathy, melanoma screening, and screening of cloud formations.
 
-In the \textbf{first section} a review of the literature on the subject of this work and related issues; highlighted the results obtained by other researchers. In particular, an overview of research related to the problem of automated screening in various fields; the analysis of models and methods of computer vision, first of all, models of deep neural networks and methods of their training is revieved. The analysis of methods of recognition, classification and semantic segmentation of planar images, use of models and methods of multi-task learning for this purpose is shown. Additionally, the metrics used to assess the reliability in the problems of classification and segmentation of images are analyzed. It was found that the precision of predictions can be defined as a Dice-Sorensen metric, or F1-metric. Approaches to the use of multi-task training for classification and segmentation of images in automated screening tasks are presented. 
+The tools are developed in the Python programming language using the PyTorch automatic differentiation framework. Based on the developed tools, effective software modules have been created, which are integrated with cloud services for solving resource-intensive learning tasks of neural networks, which provides high computing power and speed of prediction in automated screening tasks.
 
-An analysis of labeling noise in datasets for various automated screening tasks was performed, which showed that the main problems with data labeling in screening tasks are:
+For the task of automated screening in the cloud organization patterns segmentation in satellite images (within the project "Understanding Clouds from Satellite Images" on the platform for competitions in data science Kaggle) the proposed models of neural networks were used, as well as methods for training and inference. The increase in Dice measure relative to the base model was 3.9\%.
 
-\begin{enumerate}
-	\item Segmentation masks that capture pixels adjacent to the object;
-	\item Segmentation masks that do not completely cover the object;
-	\item There are no segmentation masks for some objects;
-	\item There are extra masks in places where there are no objects;
-	\item Invalid classes assigned to image.
-\end{enumerate}
+For the task of automated screening in the diabetic retinopathy classification (within the project "APTOS 2019 Blindness Detection" on the platform for competitions in data science Kaggle) used the proposed methods of multitasking and inference. The increase in F1-measure relative to the base model was 2.1 \%.
 
-An overview of existing models of data sets and methods of their generation is given. It was found that there are no dataset models that would allow to change the noise level of the labeling according to the noise characteristics in real data sets. 
-It was found that the inconsistency and imbalance of training data sets for automated screening tasks occurs due to the relatively small number of anomalous examples in populations and a significant level of labeling error. This creates a problem when teaching deep neural networks by standard methods. Therefore, when building classification and segmentation models, it is necessary to solve the problem \textit {learning with partial error labeling}. 
+For the task of recognizing skin lesions in melanoma screening (within the SIIM-ISIC Melanoma Classification project on the Kaggle Data Science Competition Platform), the proposed localization of image-relevant image features was used. The use of the proposed method simplified the process of monitoring the learning of neural networks, which helped prevent retraining and increase the reliability of the classification by 3.5\%.
 
-In automated screening tasks, it is important to reduce the number of false-positive diagnostic results, due to the relatively low prevalence of abnormal cases in populations and associated with false-positive future actions. Therefore, when building classification and segmentation systems, you need to focus on \textit {reducing false-positive results}. 
+The methods and tools developed in the work were introduced into the educational process of ONPU and the SafetyRadar software product of VITech Lab, the main purpose of which is to screen the presence of elements of personal protective equipment on people in construction sites, or hospitals and laboratories.
 
-Thus, the review of modern literature on the topic of the dissertation allows to confirm the relevance and practical value of the research conducted in the work. 
+\keywords{image analysis, dataset models, deep neural networks, multi-tasking machine learning, segmentation, classification, loss functions}
 
-The \textbf {second section} presents a parametric model of datasets with noisy labeling for segmentation and classification tasks, which corresponds to the estimates of noise models in various automated screening tasks, as well as a method of controlled generation of both images and segmentation masks with class labels modified accordingly to randomly selected shortcomings.
-
-The use of model datasets for testing the reliability of models and methods of learning deep neural networks in the problems of classification and semantic segmentation is proposed. Testing is performed under controlled conditions by introducing noise into the labeling of the training data set only, while the test data set remains with accurate labeling.
-
-The data set model has the following parameters:
-
-\begin{itemize}
-	\item Set of background images $\mathcal{X}_{b}$
-	\item Set of objects $\mathcal {X}_{f}$
-	\item A set of image textures of objects $\mathcal{X}_{tex}$ 
-	\item The number of images in the generated data set $N$
-	\item Size of generated images $S_{img}$ in pixels
-	\item The average size of the object $S_{obj}$ in pixels
-	\item Maximum deviation of object size $\Delta_{max}$ as a percentage
-	\item The maximum number of objects in the image $N_{obj}$
-\end{itemize}
-	
-	In contrast to existing models, the proposed model introduces four additional parameters:
-	
-	\begin{itemize}
-		\item The probability of erosion and dilation the mask of each of the objects $P_e$ та $P_d$
-		\item Kernel sizes of erosion and dilation the masks of all objects are allowed $S_e$ та $S_d$	
-	\end{itemize}
-	
-	Entering these parameters allows to create a controlled noise labeling in accordance with the real characteristics.
-	
-	Based on the proposed parametric model, a method of generating data sets with noisy labeling has been developed, which consists of two stages: the stage of background generation and the stage of placing an arbitrary number of objects on it. Both regular natural images and synthetic textures, or a constant color fill can be used to generate the background. The use of images from MNIST or FashionMNIST datasets is proposed as objects.
-	
-	The use of these data sets is due to three factors:
-	\begin{itemize}
-		\item Possibility of simple separation of the object from the original background;
-		\item The presence of similar elements in different classes (for example, numbers 1 and 7, or classes \textit{T-shirt} and \textit{Dress});
-		\item High accuracy of modern neural networks on these data sets, which allows to focus on the impact of noise in the labeling during training, instead of recognizing objects directly.
-	\end{itemize}
-	
-	Errors in the labeling are artificially introduced by randomly applying morphological operations of erosion and dilation with a square kernel to the segmentation masks of individual objects before adding them to the general mask.
-	
-	The training and test datasets are generated based on the model, all images in the datasets are generated independently.
-	
-	The algorithm for generating each of the images consists of the following steps:
-	
-	1. Choosing a random background image: $x_{bg} \sim \mathcal{X}_b$
-	
-	2. Select the number of objects in the image: $n_{obj} \sim \mathcal{U}(1, N_{obj})$
-	
-	3. Initialization of the segmentation mask: $M = 0 \; \text{так що} \; M \in \mathcal{R}^{C \times S_{img} \times S_{img}}$
-	
-	4. According to the number of images $n_{obj}$ perform the following steps:
-	
-	\qquad 4.1 Choose the size of the object: $s \sim \mathcal{U}(S_{obj} - \Delta_{max}, S_{obj} + \Delta_{max})$
-	
-	\qquad 4.2 Select the coordinates of the object: 
-	\begin{align*}
-		i_f &\sim \mathcal{U}(0, S_{img} - s)\\
-		j_f &\sim \mathcal{U}(0, S_{img} - s)
-	\end{align*}
-	
-	\qquad 4.3 Select an image of the object $x_{fg} \sim \mathcal{X}_f$ and the corresponding object class $c_{fg} \sim \mathcal{Y}_f$
-	
-	\qquad 4.4 Resize the image of the object using bilinear interpolation: 
-	\begin{align*}
-		\hat{x}_{fg} = R_{bilinear}(x_{fg})
-	\end{align*}
-	
-	\qquad 4.5 Select a texture image $x_{tex} \sim \mathcal{X}_{tex}$
-	
-	\qquad 4.6 Modify the image of the object using the texture:
-	\begin{equation*}
-		\hat{x}_{fg} = x_{fg} \circ x_{tex}[i_f:i_f+s, j_f:j_f+s]
-	\end{equation*}
-	
-	\qquad 4.7 Place the image of the object on the background image:
-	\begin{equation*}
-		x_{bg}[i_f:i_f+s, j_f:j_f+s] = (1 - x_{fg}) \circ x_{bg} + \hat{x}_{fg}
-	\end{equation*}
-	
-	\qquad 4.8 Create an object segmentation mask:
-	\begin{equation*}
-		M_{seg} = x_{fg} > \theta_{seg}
-	\end{equation*}
-	
-	\qquad where $\theta_{seg}$ is the binarization threshold of the original image of the object. For a data set MNIST $\theta_{seg} = 0.2$, for a data set FashionMNIST $\theta_{seg} = 0.1$.
-	
-	\qquad 4.9 Modify the segmentation mask according to the required noise rate:
-	\begin{equation*}
-		M_{seg} = 
-		\begin{cases}
-			M_{seg} \oplus K^{S_d \times S_d} &\text{ if } p_d \sim \mathcal{U}(0, 1) < P_d\\
-			M_{seg} \ominus K^{S_e \times S_e} &\text{ if } p_e \sim \mathcal{U}(0, 1) < P_e
-		\end{cases}
-	\end{equation*}
-	\qquad where $K^{S_d \times S_d}$ - kernel matrix $K^{S_e \times S_e}$ - erosion core matrix.
-	
-	\qquad 4.10 Place the modified object segmentation mask on the overall image of the segmentation mask:
-	\begin{equation*}
-		M[c_{fg}, i_f:i_f+s, j_f:j_f+s] = max \; \{ M[c_{fg}, i_f:i_f+s, j_f:j_f+s], M_{seg} \}
-	\end{equation*}
-	
-	Due to this generation option, it is possible to obtain multiple data sets with similar characteristics, which allows the use of non-parametric statistical methods, such as bootstrapping to evaluate models. In practice, to generate different data sets, it is sufficient to change the initialization of the random number generator.
-	
-	
-	
-	
-	
-	
-	
-	
-	 The work in the \textbf{third section} is devoted to models of deep neural networks, as well as methods of multi-task learning to simultaneously increase the reliability of classification and semantic segmentation without changing the time spent.
-	
-	The proposed model of deep neural network architecture uses encoder-decoder, architecture of neural networks based on LinkNet \cite{linknet}. The developed model consists of an encoder and two decoders: for segmentation and classification tasks, respectively. In the role of the encoder can be used by existing multi-architecture, such as VGGNet, ResNet, EfficientNet and others. Feature maps after each stage of spatial reduction are used as inputs for the segmentation decoder, for the classification decoder is used a feature map from the deepest layer of the encoder. Graphical representation of the model is shown in the figure\ref{fig:my_net_arch_introabs_en} 
-	
-	\begin{figure}
-		\centering
-		\includegraphics[width=16cm]{my_ne_arch.png}
-		\caption{ General neural network architecture with decoder and classifier }
-		\label{fig:my_net_arch_intro_abs_en}
-	\end{figure} 
-	
-	
-	Also, the proposed model is presented mathematically. Let the neural network of the encoder be defined as $F_{encoder}$. Then, for the input image $x \in \mathcal{R} ^ {3 \times H \times W}$,  $v_1, v_2, ... v_i, ... v_n$ - a set of sign cards, so $v_i \in \mathcal{R} ^ {c_i \times \frac{H}{i} \times \frac{W}{i}}$, де $c_i$ - the number of channels for each of the feature cards, а $n$ - number of stages encoder (depending on the architecture):
-	
-	\begin{equation}
-		\label{eqn:enc_features_intro_abs_en}
-		v_1, v_2 ... v_n = F_{encoder}(x, \theta_{enc})
-	\end{equation}
-	
-	where $\theta_{enc}$ - encoder parameter set.
-	
-	Then, the neural networks of the segmentation and classification decoder can be defined as $F_{seg}$ and $F_{cls}$ accordingly. For a set of feature maps generated by the encoder, we have:
-	\begin{align}
-		M_{seg} &= F_{seg}((v_1, v_2 ... v_n), \theta_{seg}) \\
-		C_{cls} &= F_{cls}((v_n), \theta_{cls})
-	\end{align}
-	
-	where  $\theta_{seg}$ and $\theta_{cls}$ are segmentation and classification decores parameter sets. 
-	
-	The advantage of using the basic LinkNet architecture is the ability to apply transfer learning to speed up the training process: the set of encoder parameters $\theta_{enc}$ is initialized using the parameters obtained after training the encoder on the Imagenet data set. The decoder is initialized using the He method: $\theta \in \mathcal{U}(-b, b)$, where $b$ is the constant that depends on the layer type.
-	
-	Based on the developed neural network model, methods of multi-task learning of deep neural networks and prediction of results are proposed. The method of training neural networks in terms of partially erroneous labeling of training data is based on the use of tasks derived from the original. It is shown that for the problem of semantic segmentation there is a semantically closer more general problem for which the labeling of training data is more accurate than for the original.
-	
-	Unlike previous methods based on the study of more detailed semantically similar problems, the developed method of using more accurate data for more general problems allows to improve the resolution of internal representations of the neural network, which, in turn, improves the results on the original problem. Also, because the tasks are semantically similar, there is no conflict of gradients, which is typical for learning semantically heterogeneous problems.
-	
-	Thus, more general to the problem of semantic segmentation is the problem of classification. In this context, the task of classification is reduced to the task of multiple instance learning: instead of marking each of the objects for all classes in the image, the image is a bag with one or more objects and appropriate labeling, whether objects of given classes in the image.
-	
-	Suppose that for the image  $x \in \mathcal{R}^{3 \times H \times W}$ there is a segmentation mask $y_s \in \mathcal{R}^{C \times H \times W}$ where $C$ - the number of classes, and, $H$ and $W$ the height and width of the image, respectively. If there is at least one marked object of class $с$, in the segmentation mask, the label of the corresponding class $y_c \in (0, 1)^C$ is set in the labeling of the classification problem:
-	
-	\begin{equation}
-		y_c = t < \sum_{i}^{H} \sum_{j}^{W} y_{s_{ij}}
-	\end{equation}
-	
-	where $t$ - the threshold of the minimum size of the object in pixels
-	
-	The classification problem generated in this way has a lower probability of erroneous labeling.
-	
-	To reduce the impact of the erroneous part of the labeling, a change to the loss function when learning neural networks was proposed for the first time: the loss function for a problem with less accurate labeling is limited at the top, so when learning multiple tasks, gradients from incorrect labeling do not affect the learning process:
-	
-	\begin{equation*}
-		\mathcal{L} \rceil = min(L, \theta)
-	\end{equation*}
-	
-	where $\theta$ - the threshold limit function loss.
-	For the top constraint function, the gradient is defined only on the interval $(-\infty, \theta]$, то so for the period $(\theta, \infty)$ gradient is set to zero:
-	
-	
-	\begin{equation*}
-		\mathcal{\nabla} min(L, \theta) = 
-		\begin{cases}
-			1 &\text{$L \in (-\infty, \theta]$}\\
-			0 &\text{$L \in (\theta, \infty)$}
-		\end{cases}
-	\end{equation*}
-	
-	Loss function for each task is calculated separately. The limited loss function is used to train the segmentation decoder, while the classification decoder uses the normal one.
-	The total value of the loss function is defined as the arithmetic mean between individual values:
-	
-	\begin{equation}
-		L_{total} = \frac{L_{seg} \rceil + L_{cls}}{2}
-	\end{equation}
-	
-	Accordingly, the total gradient of the combined loss function is the mean of individual gradients:
-	
-	\begin{equation}
-		\nabla L_{total} = \frac{\nabla L_{seg} \rceil + \nabla  L_{cls}}{2}
-	\end{equation}
-	
-	The threshold for limiting the loss function for the segmentation problem is a parameter of the learning algorithm and should be chosen empirically depending on the level of errors in the labeling. Thus, a gradient can update parameters from at least one loss function for each input example.
-	
-	Based on the proposed neural network model and the method of its training, a method of combining semantically similar tasks at the inference stage has been developed in order to increase the reliability of classification and segmentation of planar images without increasing time.
-	
-	Let $C_{cls} \in \mathcal{R}^{C}$ та $M_{seg} \in \mathcal{R}^{C \times H \times W}$- results of classification and segmentation decoders, respectively, their values are in the interval  $(- \infty, + \infty)$ (logits).
-	
-	To get results in the $[0, 1]$ interval, logistic sigmoid activation functionc is used:
-	$ [0, 1] $ 
-	
-	\begin{equation*}
-		\sigma(x) = \frac{1}{1 + e^{-x}}
-	\end{equation*}
-	
-	The proposed method is to weigh the segmentation map using normalized classifier logits. The first step is the transformation of segmentation and classification to the $[0, 1]$ range:
-	
-	\begin{align*}
-		\hat{M}_{seg} &= \sigma(M_{seg}) \\
-		\hat{C}_{cls} &= \sigma(C_{cls})	
-	\end{align*}
-	
-	These estimates have the same dimensions as the original mask and classes, for the convenience of representation of operations added additional dimensions to the vector of classes:$\hat{M}_{seg} \in \mathcal{R}^{C \times H \times W}$ and $\hat{C}_{cls} \in \mathcal{R}^{C \times 1 \times 1}$ 
-	
-	The segmentation map is weighed using the Hadamard product between the matrices $\hat{M}_{seg}$ та $\hat{C}_{cls}$
-	
-	\begin{equation*}
-		M_{refined} = \hat{M}_{seg} \circ \hat{C}_{cls}
-	\end{equation*}
-	
-	
-	To improve the ability to interpret model predictions, the method of localization of important image features for classification was improved through the use of multi-task learning methods, which allowed its use in the absence of semantic segmentation labeling in the training data set.
-	
-	The basis of the proposed method is an iterative refinement of the map of localization features by directing the gradients from the classification problem:
-	
-	The first step is to calculate the refined classification features. To do this, the Hadamard product is calculated between the output of the segmentation decoder normalized by the sigmoid function and the classification logs:
-	\begin{equation}
-		M_{unsup} = \hat{M}_{seg} \circ C_{cls}
-	\end{equation}
-	
-	Next, to obtain the classification result, the summation of the elements $M_{unsup}$ is performed with normalization by the sum of the elements of the original non-normalized localization map:
-	
-	\begin{equation}
-		C_{unsup} = \frac{\sum_{h=0}^H \sum_{w=0}^{W} M_{unsup(h,w)}}{\sum_{h=0}^H \sum_{w=0}^{W} M_{seg(h,w)} + c}
-	\end{equation}
-	
-	For numerical stability, added to the denominator constant low $c \approx 10^{-5}$
-	
-	
-	Since the scale of the normalized output of the segmentation decoder is in the range $[0,1]$, the use of the Hadamard product allows us to consider $\hat{M}_{seg}$ as a map of the importance of regions for the classification problem. During training the neural network, this structure encourages a combination of tasks neural network to the appointment of high value ($\hat(M)_{seg}\rightarrow 1 $) for important characteristics that are common in images of the training data set.
-	
-	This iterative refinement prompts the neural network to assign high values ($\sigma(M) \rightarrow 1$) to important features that are common in the images from the training data set.
-	
-	On inference stage is used as a classification problem and the problem of localization. Only when the classification output exceeds the specified threshold $T_c$, the localization decoding procedure is performed, otherwise, the localization map is considered equal to zero for all pixels.
-	
-	Since the outputs of the segmentation decoder $M_{unsup}$ are continuous, and their scale is determined by the learning process, the binarization threshold for localization $T_{seg}$ may be different for different images. To select the optimal threshold $T_{seg}$ on each of the input images, in the post-processing process, it is proposed to use adaptive binarization according to the Otsu method in order to avoid the need to calibrate the neural network predictions.
-	
-	After performing binarization, mask received over $M_t=M>T_s$ operation performed morphological erosion with a square kernel size 1\% of the image size to get rid of small possible false-positive regions of the mask.
-	
-	These models and methods were tested in the following subject domains: screening for diabetic retinopathy, screening for melanoma, and screening of cloud formations.
-	
-	
-	The \textbf{fourth section} describes the developed tools that implement the proposed methods and tests of the developed method in the framework of experiments on synthetic data generated using the proposed model, as well as experiments in real screening problems. 
-	
-	The tools are developed in the \textit{Python} programming language using the \textit{PyTorch} automatic differentiation framework. Based on the developed tools, effective software modules have been created, which are integrated with "cloud" services for solving resource-intensive learning tasks of neural networks, which provides high computing power and speed of prediction in automated screening tasks.
-	
-	Using the model, the proposed methods were tested in different conditions, the analysis of the contribution of individual components was performed and the analysis of the resistance of the proposed method to different levels of marking noise was performed. On average, the increase in the Dice coefficient relative to the base model was 13\%. For high noise levels, the increase was 42\%.
-	
-	As part of the \textit{<< Severstal: Steel Defect Detection >>} project, the proposed neural network models were used on the Kaggle Data Science Competition Platform, and methods were proposed for their training and prediction of results for the problem of semantic segmentation of steel sheet defects. The increase in reliability (Dyce measure) relative to the base model was 4.2\%.
-	
-	
-	As part of the project \textit {<<Understanding Clouds from Satellite Images>>} on the platform for competitions in data science Kaggle used the proposed models of neural networks, as well as methods for training and predicting results for the problem of semantic segmentation of cloud patterns in satellite images. The increase in reliability (Dyce measure) relative to the base model was 3.9\%.
-	
-	
-	As part of the \textit {<<APTOS 2019 Blindness Detection>>} project on the Kaggle Data Science Competition Platform, the proposed methods of multi-task learning and predicting results in the task of classifying fundus photographs for the screening of diabetic retinopathy were used. The increase in reliability (F1-measure) relative to the base model was 2.1\%.
-	
-	The project \textit{<<SIIM-ISIC Melanoma Classification>>} on the Kaggle Data Science Competition Platform used the proposed localization of classification-relevant image features in the problem of recognizing skin lesions for melanoma screening. The use of the proposed method simplified the process of monitoring the learning of neural networks, which helped prevent retraining and increase the reliability of the classification by 3.5\%.
-	
-	The methods and tools developed in the work were used in the teaching processin ONPU  the software product SafetyRadar of the company \textit {VITech Lab}, the main purpose of which is to screen the presence of elements of personal protective equipment on people in construction sites, or hospitals and laboratories.
-	
-	
-	
-	\keywords{image analysis, data models, deep neural networks, multi-task machine learning, semantic segmentation, classifcation, loss functions}
-	
 \end{abstract}
 
-\newpage
-\paragraph{Список публікацій здобувача за темою дисертації}
-
-\begin{enumerate}
-	\item Tymchenko B., Neural network methods for planar image analysis in automated screening systems // Applied aspects information technology. 2021. Том 4, № 1. С. 71-79.  (Index Copernicus) 
-	
-	\textit{https://aait.opu.ua/?fetch=articles\&with=info\&id=73}
-	
-	\item Tymchenko B., Khvedchenya E., Marchenko P., Spodarets D. Classification of skin lesions using multi-task deep neural networks // Herald of advanced information technology. 2020. Том 3, № 3. С. 136–148.  (Index Copernicus)
-	
-	\textit{https://hait.opu.ua/?fetch=articles\&with=info\&id=62}
-	
-	\item Tymchenko B., Marchenko P., Spodarets D. Segmentation of cloud organization patterns from satellite images using deep neural networks // Herald of advanced information technology. 2020. Том 3, № 1. С. 352-361 (Index Copernicus)
-	
-	\textit{https://hait.opu.ua/\%EF\%BF\%BD\%EF\%BF\%BD\%EF\%BF\%BD\%EF\%BF\%BD\%EF\%BF\%BD\%EF\%BF\%BD\%EF\%BF\%BD\%EF\%BF\%BD\%C3\%A0/?fetch=articles\&with=info\&id=44}
-	
-	\item Tymchenko B., Marchenko P., Spodarets D. Deep learning approach to diabetic retinopathy detection // Proceedings of the 9th International Conference on Pattern Recognition Applications and Methods, ICPRAM 2020, Valletta, Malta, February 22-24, 2020 / Ed. by Maria De Marsico, Gabriella Sanniti di Baja, Ana L. N. Fred. –– SCITEPRESS, 2020. C. 501–509. (Scopus)
-	
-	\textit{https://www.scitepress.org/Papers/2020/89708/}
-	
-	\item Tymchenko B., Hramatik A., Tulchiy H. Classifying mixed patterns of proteins in microscopic images with deep neural networks // Herald of advanced information technology. 2019. Том 2, № 1. С. 29-36 (Index Copernicus)
-	
-	\textit{https://hait.opu.ua/?fetch=articles\&with=info\&id=18}
-	
-	\item Tymchenko B., Antoshchuk S. Race from pixels: Evolving neural network controller for vision-based car driving // XVIII International Conference on Data Science and Intelligent Analysis of Information / Springer. 2018. С. 20–29. (Index Copernicus) 
-	
-	\textit{https://www.springerprofessional.de/en/race-from-pixels-evolving-neural-network-controller-for-vision-b/16003024}
-	
-	\item Tymchenko B, Hramatik A., Tulchyi H., Antoshchuk S. Making money: Evolving neural network for stock prediction // VI українсько-нiмецька конференцiя «Iнформатика. Культура. Технiка». 2018. С. 34-35
-	
-	\item Tymchenko B., Antoshchuk S. Evolution strategy for policy search in robotics // Сучаснi Iнформацiйнi Технологiї / Одеський Нацiональний Полiтехнiчний Унiверситет. 2018. 
-	
-	\textit{http://dspace.opu.ua/jspui/handle/123456789/8056}
-	
-	\item Tymchenko B., Halchonkov O. Online lane detection algorithm for line scan camera // Сучаснi Iнформацiйнi Технологiї / Одеський Нацiональний Полiтехнiчний Унiверситет. 2017. C. 86-89 
-	
-	\textit{http://dspace.opu.ua/jspui/handle/123456789/3351}
-	
-	\item Tymchenko B. Global position system sensor model for robotics simulator // Працi Одеського полiтехнiчного унiверситету. 2017. № 3. С. 88–93. 
-	
-	\textit{http://dspace.opu.ua/jspui/handle/123456789/7939}
-	
-	\item Tymchenko B., Samodelok V., Putilina D., Galchonkov O. The robust control system for skid elimination in dynamic road environments // Електротехнiчнi та комп’ютернi системи. 2016. № 23. С. 107–112.
-	http://dspace.opu.ua/jspui/handle/123456789/1176
-	
-	\item Komleva N., Cherneha K., Tymchenko B., Komlevoy O. Intellectual approach application for pulmonary diagnosis 2016 IEEE First International Conference on Data Stream Mining Processing (DSMP). 2016. C. 48–52.
-	
-	\textit{https://ieeexplore.ieee.org/document/7583505/}
-	
-	\item Cherneha K., Tymchenko B., Komleva N. Decision support system for automated medical diagnostics // Електротехнiчнi та комп’ютернi системи. 2016. № 23. С. 65–72. (Index Copernicus)
-	
-	\textit{http://dspace.opu.ua/xmlui/handle/123456789/1140}
-	
-\end{enumerate}
