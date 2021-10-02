@@ -160,8 +160,8 @@ type=phd,% тип дисертації
 	% що захист проводиться в тій самій установі, де здійснювалася підготовка здобувача,
 	% а отже, немає потреби писати назву цієї установи двічі на титульному і в анотації.
 	% Але за потреби можна вручну повторити тут назву установи, і буде повтор на титульному і в анотації.
-	\council(uk){K~41.052.08}
-	\council(en){K~41.052.08}
+	\council(uk){ДФ~41.052.021}
+	\council(en){ДФ~41.052.021}
 	
 	% Рік, коли написана дисертація
 	\date{2021}
@@ -169,33 +169,35 @@ type=phd,% тип дисертації
 
 	
 	% Тут буде титульний аркуш
-%	\maketitle
+	\maketitle
 	
 	% Анотація
 	
-%	\include{abstract}
-%	\include{abstract_en}
+	\include{abstract}
+	\include{abstract_en}
 
 	% Зміст
 	\tableofcontents
 %	
 %	% Розділи дисертації в окремих файлах
-%	\include{introduction}     % Вступ
+	\include{introduction}     % Вступ
 	\include{chapter1}%        Розділ 1
 	\include{chapter2}%        Розділ 2
 	\include{chapter3}%        Розділ 3
 	\include{chapter5}%        Розділ 4
-%	\include{conclusions}%      Висновки
-%%
+	\include{conclusions}%      Висновки
+%
 	\bibliographystyle{gost2008}
 	\bibstyle{gost2008}
 	\bibliography{dys_paper}
 %
-%	\appendix
+	\appendix
 %
-%	\include{appendix_a}
-%	\include{appendix_b}
-%	\include{appendix_c}
+	\include{appendix_a}
+	\include{appendix_b}
+	\include{appendix_c}
+	\include{appendix_d}
+	\include{appendix_e}
 %	
 
 	
