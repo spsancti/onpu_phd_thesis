@@ -25,7 +25,7 @@ Because obtaining reliable classification and segmentation annotations for test 
 
 Proposed model of datasets $\mathcal{M}$ has the following definition: 
 \begin{equation}
-	\label{eqn:abstract_model_Def}
+	\label{eqn:abstract_model_Def_en}
 	\mathcal{M} \in \{ \mathcal{X}_{b}, \mathcal{X}_{tex}, N, S_{img}, S_{obj}, \Delta_{max}, N_{obj}, P_e, P_d, S_e, S_d \}
 \end{equation}
 
@@ -44,7 +44,7 @@ The last four parameters are introduced for controlled annotation errors.
 
 Formulated \textbf{first point of scientific novelty}: for the first time a parametric formalization of the dataset model with partially erroneous annotations, which are characteristic of real problems of automated screening, was proposed, which allowed the development of a method of generating training, test and validation data sets.
 
-Based on the proposed parametric model (\ref{eqn: abstract_model_Def}), a method for generating data sets with partly-erroneous annotations has been developed, which contains the following steps:
+Based on the proposed parametric model (\ref{eqn:abstract_model_Def_en}), a method for generating data sets with partly-erroneous annotations has been developed, which contains the following steps:
 
 1. Choose random background: $x_{bg} \sim \mathcal{X}_b$
 
@@ -115,7 +115,7 @@ To implement multi-task learning methods, it is proposed to improve the models o
 
 The model of the deep neural network is represented by the following expression:
 \begin{align}
-	\label{eqn:enc_features_abs}
+	\label{eqn:enc_features_abs_en}
 	v_1, v_2 ... v_n &= F_{encoder}(x, \theta_{enc}) \\
 	M_{seg} &= F_{seg}((v_1, v_2 ... v_n), \theta_{seg}) \\
 	C_{cls} &= F_{cls}((v_n), \theta_{cls})
