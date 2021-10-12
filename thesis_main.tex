@@ -28,7 +28,7 @@ type=phd,% тип дисертації
 \usepackage[T2A]{fontenc}
 \usepackage[cp1251]{inputenc}
 \usepackage[russian,english,main=ukrainian]{babel}
-\usepackage{caption}
+\usepackage[figurename=\CYRR\cyri\cyrs\cyru\cyrn\cyro\cyrk,labelsep=period]{caption}
 \captionsetup[table]{skip=0pt,singlelinecheck=off}
 
 % Підключення необхідних пакетів. Наприклад,
@@ -97,7 +97,6 @@ type=phd,% тип дисертації
 \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
 \newcommand{\norm}[2][]{\left\lVert#2\right\rVert_{#1}}
 \renewcommand{\comment}[1]{}
-
 
 % Якщо потрібно працювати лише з деякими розділами
 %\includeonly{}
